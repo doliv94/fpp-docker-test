@@ -1,0 +1,36 @@
+x-common-service: &common-service-template
+  build:
+    context: .
+    ssh:
+      - default
+    dockerfile:
+      Dockerfile
+
+networks:
+  docker-network:
+    driver:
+      bridge
+
+services:
+  container1:
+    <<: *common-service-template
+    container_name: 
+      master
+    ports:
+      - "1022:22"
+    command: 
+      /bin/bash -c "/setup.sh" mpirun mpiexec
+
+  container2:
+    <<: *common-service-template
+    container_name: 
+      slave1
+    ports:
+      - "2022:22"
+
+  container3:
+    <<: *common-service-template
+    container_name: 
+      slave2
+    ports:
+      - "3022:22"
